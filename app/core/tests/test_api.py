@@ -12,6 +12,7 @@ RECURRING_EVENTS_URL = reverse("recurring-event-list")
 FAQS_URL = reverse("faq-list")
 FAQS_VIEWED_URL = reverse("faq-viewed-list")
 SPONSOR_PARTNERS_URL = reverse("sponsor-partner-list")
+LOCATION_URL = reverse("location-list")
 
 CREATE_USER_PAYLOAD = {
     "username": "TestUserAPI",
@@ -140,7 +141,6 @@ user_actions_test_data = [
     user_actions_test_data,
 )
 def test_user_actions(client_name, action, endpoint, payload, expected_status, request):
-
     client = request.getfixturevalue(client_name)
     action_fn = getattr(client, action)
     url = request.getfixturevalue(endpoint)
@@ -165,7 +165,6 @@ def test_create_recurring_event(auth_client, project):
 
 
 def test_create_sponsor_partner(auth_client):
-
     payload = {
         "partner_name": "Test Partner",
         "partner_logo": "http://www.logourl.com",
@@ -178,7 +177,6 @@ def test_create_sponsor_partner(auth_client):
 
 
 def test_create_faq(auth_client):
-
     payload = {
         "question": "How do I work on an issue",
         "answer": "See CONTRIBUTING.md",
@@ -195,3 +193,18 @@ def test_get_faq_viewed(auth_client, faq_viewed):
     res = auth_client.get(FAQS_VIEWED_URL)
 
     assert res.data[0]["faq"] == faq_viewed.faq.pk
+
+
+def test_create_location(auth_client):
+    """Test that we can create a location"""
+
+    payload = {
+        "name": "Test Hack for L.A. HQ",
+        "address_line_1": "123 Hacker Way",
+        "address_line_2": "Suite 456",
+        "city": "Los Angeles",
+        "state": "CA",
+        "zip": "90210",
+    }
+    res = auth_client.post(LOCATION_URL, payload)
+    assert res.status_code == status.HTTP_201_CREATED

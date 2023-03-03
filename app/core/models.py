@@ -208,6 +208,7 @@ class FaqViewed(AbstractBaseModel):
     """
     FaqViewed tracks how many times an FAQ has been viewed by serving as an instance of an FAQ being viewed.
     """
+
     faq = models.ForeignKey(Faq, on_delete=models.CASCADE)
 
     class Meta:
@@ -215,3 +216,20 @@ class FaqViewed(AbstractBaseModel):
 
     def __str__(self):
         return f"{self.faq} viewed at {self.created_at.strftime('%b %d %Y %H:%M:%S')}"
+
+
+class Location(AbstractBaseModel):
+    """
+    Location for event
+    """
+
+    name = models.CharField(max_length=255, unique=True, verbose_name="Location name")
+    address_line_1 = models.CharField(max_length=255, unique=False)
+    address_line_2 = models.CharField(max_length=255, unique=False, blank=True)
+    city = models.CharField(max_length=100, unique=False)
+    state = models.CharField(max_length=2, unique=False)
+    zipcode = models.CharField(max_length=10, unique=False)
+    phone = PhoneNumberField(blank=True)
+
+    def __str__(self):
+        return f"{self.name}"
