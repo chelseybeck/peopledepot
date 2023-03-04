@@ -6,6 +6,7 @@ from django.contrib.auth.models import UserManager
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from recurrence.fields import RecurrenceField
 from timezone_field import TimeZoneField
 
 
@@ -161,6 +162,7 @@ class RecurringEvent(AbstractBaseModel):
     duration_in_min = models.IntegerField(null=True, blank=True)
     video_conference_url = models.URLField(blank=True)
     additional_info = models.TextField(blank=True)
+    recurrences = RecurrenceField(blank=True)
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     # location_id = models.ForeignKey("Location", on_delete=models.DO_NOTHING)
